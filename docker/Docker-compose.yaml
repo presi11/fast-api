@@ -1,0 +1,32 @@
+version: "3.2"
+
+services:
+    charlie-teknowlogi-db-service:
+        image: charlie-teknowlogi-db-service
+        build:
+            context: ..
+            dockerfile: docker/Dockerfile
+        command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+        volumes:
+            - ../:/usr/src/app/
+        # ports:
+        #     - 8000:8000
+        #     - 9999:9999
+        environment:
+            - DEBUGGER=False
+            - WEB_APP_VERSION=0.0.0
+            - WEP_APP_TITLE=Charlie Teknowlogi Service DB
+            - WEP_APP_DESCRIPTION=Database service for Charlie Teknowlogi
+            - ENVIRONMENT=dev
+            - POSTGRES_DATABASE_URL=postgres://postgres:escorpion15@localhost:80/dogs 
+            - VERSION=0.0.0
+            - DEFAULT_DATA=False
+            - DEFAULT_DEV_DATA=False
+            - DEFAULT_DELTA=7
+            - CELERY_BROKER=amqp://user:bitnami@localhost:5672//
+            - CELERY_BACKEND=redis://USER:PASSWORD@HOST:PORT/0
+        network_mode: "host"
+
+networks:
+    host:
+        external: true
